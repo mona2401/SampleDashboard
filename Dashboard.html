@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f5;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: auto repeat(2, 1fr);
+            gap: 10px;
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #ffffff, #e6e6f2);
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .card-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .text-data {
+            font-size: 1.2em;
+            color: #ffffff;
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #36a2eb, #6a82fb);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header {
+            grid-column: span 3;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <div class="text-data">PO Matching: 150</div>
+            <div class="text-data">Pending: 60</div>
+            <div class="text-data">Closed: 90</div>
+        </div>
+        <div class="card">
+            <div class="card-title">Status vs PO Numbers</div>
+            <canvas id="statusBarChart"></canvas>
+        </div>
+        <div class="card">
+            <div class="card-title">PO Trends</div>
+            <canvas id="poLineChart"></canvas>
+        </div>
+        <div class="card">
+            <div class="card-title">Overall Status</div>
+            <canvas id="overallStatusChart"></canvas>
+        </div>
+        <div class="card">
+            <div class="card-title">Department-wise Pending Tasks</div>
+            <canvas id="departmentPendingChart"></canvas>
+        </div>
+        <div class="card">
+            <div class="card-title">PO Distribution</div>
+            <canvas id="poDistributionChart"></canvas>
+        </div>
+        <div class="card">
+            <div class="card-title">Additional Data</div>
+            <canvas id="additionalDataChart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Bar Chart for Status vs PO Numbers
+        const statusBarCtx = document.getElementById('statusBarChart').getContext('2d');
+        new Chart(statusBarCtx, {
+            type: 'bar',
+            data: {
+                labels: ['PO1', 'PO2', 'PO3', 'PO4', 'PO5'],
+                datasets: [{
+                    label: 'Closed',
+                    data: [20, 35, 25, 40, 30],
+                    backgroundColor: '#36a2eb',
+                }, {
+                    label: 'Pending',
+                    data: [10, 5, 15, 10, 20],
+                    backgroundColor: '#ff6384',
+                }]
+            },
+        });
+
+        // Line Chart for PO Trends
+        const poLineCtx = document.getElementById('poLineChart').getContext('2d');
+        new Chart(poLineCtx, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [{
+                    label: 'PO Progress',
+                    data: [5, 20, 40, 60],
+                    borderColor: '#36a2eb',
+                    tension: 0.3,
+                }]
+            },
+        });
+
+        // Pie Chart for Overall Status
+        const overallStatusCtx = document.getElementById('overallStatusChart').getContext('2d');
+        new Chart(overallStatusCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Closed', 'Pending'],
+                datasets: [{
+                    data: [90, 60],
+                    backgroundColor: ['#36a2eb', '#ff6384'],
+                }]
+            },
+        });
+
+        // Radar Chart for Department-wise Pending Tasks
+        const departmentPendingCtx = document.getElementById('departmentPendingChart').getContext('2d');
+        new Chart(departmentPendingCtx, {
+            type: 'radar',
+            data: {
+                labels: ['IT', 'Finance', 'Procurement', 'Validation'],
+                datasets: [{
+                    label: 'Pending Tasks',
+                    data: [20, 15, 10, 5],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: '#36a2eb',
+                }]
+            },
+        });
+
+        // Doughnut Chart for PO Distribution
+        const poDistributionCtx = document.getElementById('poDistributionChart').getContext('2d');
+        new Chart(poDistributionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['IT', 'Finance', 'Procurement', 'Validation'],
+                datasets: [{
+                    data: [30, 25, 20, 25],
+                    backgroundColor: ['#36a2eb', '#ff6384', '#cc65fe', '#ffce56'],
+                }]
+            },
+        });
+
+        // Polar Area Chart for Additional Data
+        const additionalDataCtx = document.getElementById('additionalDataChart').getContext('2d');
+        new Chart(additionalDataCtx, {
+            type: 'polarArea',
+            data: {
+                labels: ['Category A', 'Category B', 'Category C'],
+                datasets: [{
+                    data: [40, 30, 30],
+                    backgroundColor: ['#36a2eb', '#ff6384', '#ffce56'],
+                }]
+            },
+        });
+    </script>
+</body>
+</html>
